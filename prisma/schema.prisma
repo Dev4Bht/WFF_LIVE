@@ -1,0 +1,139 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum SignalType {
+  PROBLEM
+  SOLUTION
+  OPPORTUNITY
+  EVENT
+  WEATHER
+  DISASTER
+  INNOVATION
+  FUNDING
+  PARTNERSHIP
+  YOUTH_INITIATIVE
+  POLICY_UPDATE
+  VOLUNTEER_REQUEST
+  KNOWLEDGE_SHARE
+  EMERGENCY
+  TRAINING
+  RESEARCH
+}
+
+enum SignalStatus {
+  ACTIVE
+  RESOLVED
+  ARCHIVED
+}
+
+enum ConnectionStatus {
+  PROPOSED
+  ACTIVE
+  COMPLETED
+}
+
+model Chapter {
+  id          String    @id @default(cuid())
+  countryCode String    @unique
+  countryName String
+  city        String?
+  lat         Float
+  lng         Float
+  memberCount Int       @default(0)
+  founded     DateTime?
+  color       String    @default("#FF6B35")
+  description String?
+  metadata    Json?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  members      Member[]
+  signals      Signal[]
+  connectionsA Connection[] @relation("ConnectionFrom")
+  connectionsB Connection[] @relation("ConnectionTo")
+}
+
+model Member {
+  id        String   @id @default(cuid())
+  chapterId String
+  chapter   Chapter  @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  name      String
+  role      String?
+  avatarUrl String?
+  isOnline  Boolean  @default(false)
+  lastSeen  DateTime @default(now())
+  createdAt DateTime @default(now())
+
+  signals  Signal[]
+  comments Comment[]
+
+  @@index([chapterId])
+}
+
+model Signal {
+  id          String       @id @default(cuid())
+  chapterId   String
+  chapter     Chapter      @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  authorId    String?
+  author      Member?      @relation(fields: [authorId], references: [id])
+  type        SignalType
+  status      SignalStatus @default(ACTIVE)
+  title       String
+  description String
+  severity    Int          @default(1)
+  lat         Float
+  lng         Float
+  metadata    Json?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  comments  Comment[]
+  reactions Reaction[]
+
+  @@index([chapterId])
+  @@index([type])
+  @@index([createdAt])
+}
+
+model Connection {
+  id            String           @id @default(cuid())
+  fromChapterId String
+  fromChapter   Chapter          @relation("ConnectionFrom", fields: [fromChapterId], references: [id], onDelete: Cascade)
+  toChapterId   String
+  toChapter     Chapter          @relation("ConnectionTo", fields: [toChapterId], references: [id], onDelete: Cascade)
+  status        ConnectionStatus @default(ACTIVE)
+  label         String?
+  strength      Int              @default(1)
+  createdAt     DateTime         @default(now())
+
+  @@index([fromChapterId])
+  @@index([toChapterId])
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  signalId  String
+  signal    Signal   @relation(fields: [signalId], references: [id], onDelete: Cascade)
+  authorId  String
+  author    Member   @relation(fields: [authorId], references: [id])
+  body      String
+  createdAt DateTime @default(now())
+
+  @@index([signalId])
+}
+
+model Reaction {
+  id        String   @id @default(cuid())
+  signalId  String
+  signal    Signal   @relation(fields: [signalId], references: [id], onDelete: Cascade)
+  emoji     String
+  memberId  String?
+  createdAt DateTime @default(now())
+
+  @@unique([signalId, memberId, emoji])
+}

@@ -1,0 +1,98 @@
+{
+  "PROBLEM": {
+    "weight": 12,
+    "severity": [2, 4],
+    "titles": ["Water Scarcity Reported", "Crop Yield Decline", "Soil Degradation Alert", "Market Access Barrier", "Post-Harvest Loss Spike"],
+    "descriptions": ["Chapter members flagged a worsening trend affecting local smallholders.", "Field reports show conditions have deteriorated over the past growing season.", "Local monitoring data indicates an emerging systemic issue requiring attention."]
+  },
+  "SOLUTION": {
+    "weight": 10,
+    "severity": [1, 2],
+    "titles": ["Drip Irrigation Pilot Launched", "Community Seed Bank Opened", "Cold Storage Cooperative Formed", "Digital Market Platform Deployed", "Soil Regeneration Program Started"],
+    "descriptions": ["A youth-led team has rolled out a working intervention with early positive results.", "Chapter members successfully piloted a scalable solution to a longstanding challenge.", "This solution is now being documented for replication by other chapters."]
+  },
+  "OPPORTUNITY": {
+    "weight": 6,
+    "severity": [1, 2],
+    "titles": ["Cross-Chapter Exchange Proposed", "Regional Grant Window Open", "University Research Partnership Available", "Youth Fellowship Slots Open"],
+    "descriptions": ["A new opportunity for collaboration has been identified by the chapter.", "Chapters are invited to apply or participate before the window closes."]
+  },
+  "EVENT": {
+    "weight": 8,
+    "severity": [1, 1],
+    "titles": ["Youth Food Systems Summit", "Chapter Town Hall", "Farmer Field Day", "World Food Forum Regional Meetup"],
+    "descriptions": ["An upcoming gathering to align chapter members and partners.", "Members are convening to share progress and plan next steps."]
+  },
+  "WEATHER": {
+    "weight": 7,
+    "severity": [2, 3],
+    "titles": ["Unseasonal Rainfall Pattern", "Extended Dry Spell", "Temperature Anomaly Detected", "Early Frost Warning"],
+    "descriptions": ["Weather monitoring shows a pattern that may affect planting schedules.", "Climate data indicates a deviation from historical norms."]
+  },
+  "DISASTER": {
+    "weight": 2,
+    "severity": [4, 5],
+    "titles": ["Flooding Damages Farmland", "Drought Emergency Declared", "Locust Swarm Sighted", "Landslide Blocks Supply Route"],
+    "descriptions": ["An acute event is disrupting food systems in the region.", "Immediate coordination is needed to assess and respond to damage."]
+  },
+  "INNOVATION": {
+    "weight": 6,
+    "severity": [1, 2],
+    "titles": ["AI Crop Diagnostics Trial", "Solar-Powered Cold Chain", "Low-Cost Sensor Network Deployed", "Biofortified Seed Variety Tested"],
+    "descriptions": ["A novel technology approach is being trialed by chapter members.", "Early results suggest strong potential for scaling this innovation."]
+  },
+  "FUNDING": {
+    "weight": 5,
+    "severity": [1, 2],
+    "titles": ["Seed Grant Awarded", "Microfinance Program Expanded", "Impact Investment Secured", "Crowdfunding Campaign Launched"],
+    "descriptions": ["New funding has been secured to support chapter-led initiatives.", "This funding will support youth-led programs over the coming year."]
+  },
+  "PARTNERSHIP": {
+    "weight": 5,
+    "severity": [1, 2],
+    "titles": ["NGO Partnership Formalized", "Government Ministry Collaboration", "Private Sector Alliance Signed", "Academic Partnership Established"],
+    "descriptions": ["Chapter has formalized a new partnership to expand impact.", "This collaboration opens new channels for resources and expertise."]
+  },
+  "YOUTH_INITIATIVE": {
+    "weight": 7,
+    "severity": [1, 1],
+    "titles": ["Youth Council Formed", "Student Farming Club Launched", "Peer Mentorship Program Started", "Youth-Led Advocacy Campaign"],
+    "descriptions": ["Young leaders in the chapter have organized a new initiative.", "This initiative centers youth voices in local food system decisions."]
+  },
+  "POLICY_UPDATE": {
+    "weight": 4,
+    "severity": [1, 2],
+    "titles": ["National Food Policy Revised", "Subsidy Program Announced", "Land Rights Reform Proposed", "Trade Regulation Update"],
+    "descriptions": ["A policy shift with direct implications for local food systems.", "Chapter is tracking implementation of this policy update."]
+  },
+  "VOLUNTEER_REQUEST": {
+    "weight": 5,
+    "severity": [1, 1],
+    "titles": ["Volunteers Needed for Harvest", "Data Collection Support Requested", "Translators Needed for Workshop", "Field Survey Volunteers Sought"],
+    "descriptions": ["Chapter is seeking additional hands to support an active project.", "Volunteer support would accelerate this ongoing effort."]
+  },
+  "KNOWLEDGE_SHARE": {
+    "weight": 6,
+    "severity": [1, 1],
+    "titles": ["Best Practices Report Published", "Case Study Shared", "Toolkit Released for Replication", "Lessons Learned Documented"],
+    "descriptions": ["Chapter has published findings for other chapters to learn from.", "This knowledge is now available in the shared resource library."]
+  },
+  "EMERGENCY": {
+    "weight": 1,
+    "severity": [5, 5],
+    "titles": ["Critical Food Shortage", "Emergency Response Activated", "Supply Chain Collapse", "Health-Food Crisis Declared"],
+    "descriptions": ["An urgent, time-sensitive situation requires immediate coordination.", "Chapter has activated emergency response protocols."]
+  },
+  "TRAINING": {
+    "weight": 5,
+    "severity": [1, 1],
+    "titles": ["Agroecology Training Held", "Financial Literacy Workshop", "Climate Adaptation Bootcamp", "Digital Skills Training Session"],
+    "descriptions": ["Chapter members completed a capacity-building session.", "This training strengthens local ability to respond to future challenges."]
+  },
+  "RESEARCH": {
+    "weight": 5,
+    "severity": [1, 1],
+    "titles": ["Soil Health Study Published", "Nutrition Survey Completed", "Climate Impact Assessment Released", "Market Analysis Report Issued"],
+    "descriptions": ["New research findings relevant to regional food systems.", "This research will inform upcoming chapter initiatives."]
+  }
+}
