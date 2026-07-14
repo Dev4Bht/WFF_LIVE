@@ -2,6 +2,7 @@ import { PrismaClient, SignalType } from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import chapters from "../mock-data/chapters.json";
 import signalTemplates from "../mock-data/signal-templates.json";
+import chapterStories from "../mock-data/chapter-stories.json";
 
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
 const prisma = new PrismaClient({ adapter });
@@ -13,8 +14,15 @@ type SignalTemplateEntry = {
   descriptions: string[];
 };
 
+type ChapterStory = {
+  ambassadorRole: string;
+  problem: { title: string; description: string };
+  solution: { title: string; description: string };
+};
+
 const templates = signalTemplates as unknown as Record<string, SignalTemplateEntry>;
 const signalTypes = Object.keys(templates) as SignalType[];
+const stories = chapterStories as unknown as Record<string, ChapterStory>;
 
 function pick<T>(arr: T[]): T {
   return arr[Math.floor(Math.random() * arr.length)];
@@ -66,6 +74,45 @@ async function main() {
           severity: randomInt(template.severity[0], template.severity[1]),
           lat: chapterData.lat + (Math.random() - 0.5) * 0.5,
           lng: chapterData.lng + (Math.random() - 0.5) * 0.5,
+        },
+      });
+    }
+
+    // Curated, research-grounded problem/solution pair used by the globe's
+    // auto-spotlight tour. Tagged one member as the chapter's public-facing
+    // "ambassador" persona and authored both signals from them.
+    const story = stories[chapterData.countryCode];
+    if (story) {
+      const ambassador = await prisma.member.update({
+        where: { id: pick(members).id },
+        data: { role: story.ambassadorRole, isOnline: true },
+      });
+
+      await prisma.signal.create({
+        data: {
+          chapterId: chapter.id,
+          authorId: ambassador.id,
+          type: "PROBLEM",
+          title: story.problem.title,
+          description: story.problem.description,
+          severity: 3,
+          lat: chapterData.lat,
+          lng: chapterData.lng,
+          metadata: { curated: true },
+        },
+      });
+
+      await prisma.signal.create({
+        data: {
+          chapterId: chapter.id,
+          authorId: ambassador.id,
+          type: "SOLUTION",
+          title: story.solution.title,
+          description: story.solution.description,
+          severity: 1,
+          lat: chapterData.lat,
+          lng: chapterData.lng,
+          metadata: { curated: true },
         },
       });
     }

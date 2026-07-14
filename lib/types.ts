@@ -44,6 +44,13 @@ export interface Signal {
   chapter?: Chapter;
 }
 
+export interface Spotlight {
+  chapterId: string;
+  ambassador: { name: string; role: string | null } | null;
+  problem: { title: string; description: string } | null;
+  solution: { title: string; description: string } | null;
+}
+
 export interface Connection {
   id: string;
   fromChapterId: string;

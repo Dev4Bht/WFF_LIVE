@@ -74,6 +74,19 @@ public/textures/     Earth day-map + topology (bump) textures sourced from three
   globe when `selectedChapterId` is null, because the camera fly-to target
   is computed once in the globe's local space at click time and would
   drift if the globe kept spinning underneath it.
+- **Cinematic auto-spotlight tour** (`components/globe/TourController.tsx`):
+  a headless component running a single imperative state machine (via
+  `useSignalMapStore.subscribe`, not multiple React effects, to avoid
+  timer-coordination races) that cycles the camera focus across chapters
+  with curated content (~5s each, randomized) and immediately interrupts
+  for genuine live SSE pings (~50-70s hold), pausing whenever the user
+  manually selects a chapter. `GlobeScene` derives camera focus from
+  `selectedChapterId ?? activeSpotlight.chapterId` — manual selection
+  always wins. Curated per-chapter "ambassador" profile + real
+  problem/solution content (`mock-data/chapter-stories.json`, grounded in
+  WFF/FAO/gov research — not the generic simulator text) is seeded as
+  `Signal` rows tagged `metadata.curated: true` and served via
+  `/api/spotlights`; rendered by `components/shell/SpotlightCard.tsx`.
 - **Signal simulator**: `lib/simulator/generator.ts` is called both by
   `prisma/seed.ts` (initial seed) and `app/api/events/stream/route.ts` (an
   ongoing jittered ~3-8s loop) so simulated activity and REST reads never

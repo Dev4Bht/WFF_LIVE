@@ -27,6 +27,10 @@ export function GlobeScene() {
   const signals = useSignalMapStore((s) => s.signals);
   const selectedChapterId = useSignalMapStore((s) => s.selectedChapterId);
   const selectChapter = useSignalMapStore((s) => s.selectChapter);
+  const activeSpotlight = useSignalMapStore((s) => s.activeSpotlight);
+
+  // Manual selection always wins; otherwise the cinematic tour drives focus.
+  const focusChapterId = selectedChapterId ?? activeSpotlight?.chapterId ?? null;
 
   useEffect(() => {
     camera.position.set(0, 0, 320);
@@ -73,30 +77,36 @@ export function GlobeScene() {
   }, [globe, recentSignals]);
 
   useEffect(() => {
-    if (!selectedChapterId) {
-      cameraControlsRef.current?.setLookAt(0, 0, 320, 0, 0, 0, true);
+    const controls = cameraControlsRef.current;
+    if (!controls) return;
+
+    if (!focusChapterId) {
+      // Cinematic ease back out to the full-globe overview.
+      controls.smoothTime = 1.6;
+      controls.setLookAt(0, 0, 320, 0, 0, 0, true);
+      return;
     }
-  }, [selectedChapterId]);
+
+    const chapter = chapters.find((c) => c.id === focusChapterId);
+    if (!chapter) return;
+
+    const { x, y, z } = globe.getCoords(chapter.lat, chapter.lng, 1.6);
+    const dist = 1.9;
+    // Manual clicks snap in quickly; the ambient tour eases in slowly for a
+    // more cinematic "best animation" feel.
+    controls.smoothTime = selectedChapterId ? 0.9 : 2.4;
+    controls.setLookAt(x * dist, y * dist, z * dist, x, y, z, true);
+  }, [focusChapterId, chapters, globe, selectedChapterId]);
 
   function handleSelect(chapter: Chapter) {
     selectChapter(chapter.id);
-    const { x, y, z } = globe.getCoords(chapter.lat, chapter.lng, 1.6);
-    const dist = 1.9;
-    cameraControlsRef.current?.setLookAt(
-      x * dist,
-      y * dist,
-      z * dist,
-      x,
-      y,
-      z,
-      true
-    );
   }
 
   useFrame(() => {
-    // Pause idle rotation while a chapter is focused so the fly-to camera
-    // target (computed once, in the globe's local space) doesn't drift.
-    if (!selectedChapterId) {
+    // Pause idle rotation while a chapter is focused (manual or tour-driven)
+    // so the fly-to camera target (computed once, in the globe's local
+    // space) doesn't drift.
+    if (!focusChapterId) {
       // useFrame runs outside React's render/commit cycle, so mutating the
       // Three.js object graph here is the standard R3F animation pattern.
       // eslint-disable-next-line react-hooks/immutability
@@ -113,7 +123,7 @@ export function GlobeScene() {
         <Beacons
           chapters={chapters}
           globe={globe}
-          selectedChapterId={selectedChapterId}
+          focusedChapterId={focusChapterId}
           onSelect={handleSelect}
         />
       </primitive>

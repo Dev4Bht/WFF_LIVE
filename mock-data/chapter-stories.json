@@ -1,0 +1,142 @@
+{
+  "US": {
+    "ambassadorRole": "Food Systems Policy Fellow",
+    "problem": { "title": "Food Waste Across the Supply Chain", "description": "An estimated third of food produced in the U.S. is lost or wasted between farm and fork, even as tens of millions of households face food insecurity — a mismatch of logistics and policy, not supply." },
+    "solution": { "title": "National Food Loss & Waste Strategy", "description": "Youth chapters are pushing city-level food-waste toolkits and supply-chain recovery programs aligned with the EPA's national strategy, redirecting surplus food to communities that need it." }
+  },
+  "BR": {
+    "ambassadorRole": "Amazon Agroforestry Coordinator",
+    "problem": { "title": "Deforestation Pressure on Family Farms", "description": "Rural youth in the Amazon and Caatinga face economic pressure to migrate to cities as mechanized industrial agriculture expands, squeezing out smallholder and agroforestry livelihoods." },
+    "solution": { "title": "Agroforestry Restoration Corridors", "description": "Youth-backed agroforestry projects are combining native and agricultural species on restored land — tens of thousands of seedlings planted so far — giving young farmers income without clearing standing forest." }
+  },
+  "NG": {
+    "ambassadorRole": "Agroecology Youth Lead",
+    "problem": { "title": "Smallholder Vulnerability to Climate Shocks", "description": "Smallholder farmers produce over 80% of Nigeria's food on more than 70 million hectares, yet over 33 million Nigerians are projected to face food insecurity, exposing how fragile that system is." },
+    "solution": { "title": "Youth-Led Agroecology Capacity Building", "description": "State-level programs are training young people from agricultural organizations in agroecology practices, building local capacity to stabilize yields against climate volatility." }
+  },
+  "IN": {
+    "ambassadorRole": "Water-Smart Farming Lead",
+    "problem": { "title": "Groundwater Depletion from Irrigation", "description": "Agriculture consumes 80-90% of India's water while surface irrigation efficiency sits near 38%, and India draws nearly a quarter of the world's groundwater — a system running faster than it can recharge." },
+    "solution": { "title": "Drip Irrigation & 'Catch the Rain' Expansion", "description": "The Pradhan Mantri Krishi Sinchayee Yojana is scaling drip and sprinkler irrigation, paired with the Jal Shakti Abhiyan rainwater-catchment push now active across 148 districts." }
+  },
+  "KE": {
+    "ambassadorRole": "Drylands Resilience Lead",
+    "problem": { "title": "Drought Cycles Threatening Pastoralist Livelihoods", "description": "Increasingly frequent drought is straining pastoralist and smallholder communities across Kenya's drylands, where rainfall variability now directly drives food insecurity." },
+    "solution": { "title": "School Farms & Climate-Smart Agriculture Strategy", "description": "Kenya's Climate Smart Agriculture Strategy and youth-run school farm programs are building resilience to temperature and rainfall shifts while giving young people hands-on food-production skills." }
+  },
+  "BT": {
+    "ambassadorRole": "Seeds of Innovation Fellow",
+    "problem": { "title": "Youth Leaving Agriculture", "description": "As Bhutan pursues its 100%-organic ambitions, youth unemployment and the drift away from farming threaten the labor base needed to sustain organic transitions in rural gewogs." },
+    "solution": { "title": "Seeds of Innovation Fellowship", "description": "Launched in August 2024 with FAO and the Ministry of Agriculture and Livestock, the WFF Bhutan Youth Chapter's fellowship backs grassroots youth-led solutions, alongside Nu 10 million in annual startup support." }
+  },
+  "JP": {
+    "ambassadorRole": "Precision Agriculture Lead",
+    "problem": { "title": "Aging Farmer Population, Falling Self-Sufficiency", "description": "Japan's farming population is among the world's oldest, and food self-sufficiency has been declining for decades, leaving the country increasingly reliant on imports for staple caloric needs." },
+    "solution": { "title": "Smart Farms & Food-Waste Reduction Tech", "description": "Youth-backed precision-agriculture pilots and IoT-driven smart farms aim to make small aging farms dramatically more productive per worker, while national food-waste laws push retailers toward near-zero surplus." }
+  },
+  "DE": {
+    "ambassadorRole": "Supply Chain Transparency Lead",
+    "problem": { "title": "Opaque Supply Chains, Circularity Gaps", "description": "Consumers and regulators increasingly can't trace how food moves from farm to shelf, making it hard to hold supply chains accountable for waste, emissions, or labor conditions." },
+    "solution": { "title": "Circular Food Systems Pilots", "description": "Chapter-backed circular-economy pilots are mapping supply chains end-to-end and diverting food byproducts back into local production loops instead of landfill." }
+  },
+  "FR": {
+    "ambassadorRole": "Biodiversity & Heritage Advocate",
+    "problem": { "title": "Erosion of Agricultural Biodiversity", "description": "Decades of intensive monoculture have narrowed the varieties of crops grown commercially, putting culinary heritage and genetic resilience against pests and drought both at risk." },
+    "solution": { "title": "Heritage Crop & Short Supply Chain Advocacy", "description": "Youth-led advocacy is reviving heritage crop varieties and building short farm-to-table supply chains that reward biodiversity instead of penalizing it." }
+  },
+  "GB": {
+    "ambassadorRole": "Urban Farming Organizer",
+    "problem": { "title": "Post-Brexit Policy Gaps & Youth Disengagement", "description": "Shifting agricultural subsidy schemes since Brexit have left many young growers uncertain of long-term support, while urban populations remain disconnected from food production entirely." },
+    "solution": { "title": "Urban Farming & Youth Policy Engagement", "description": "Chapter members are running urban farming pilots in city plots while pushing for youth seats at the table in national food-policy consultations." }
+  },
+  "ZA": {
+    "ambassadorRole": "Micro-Farming Pilot Lead",
+    "problem": { "title": "Youth Unemployment Meets Food Insecurity", "description": "South Africa's high youth unemployment and food insecurity are deeply linked — the National Youth Policy 2030 and Agriculture Master Plan both name youth exclusion from agrifood systems as a core barrier." },
+    "solution": { "title": "Youth Micro-Farming Entrepreneurship Pilot", "description": "The WFF South Africa Youth Chapter, launched in Johannesburg in November 2025, is backing climate-smart micro-farming pilots that train unemployed youth as agritech entrepreneurs." }
+  },
+  "EG": {
+    "ambassadorRole": "Third Agricultural Revolution Fellow",
+    "problem": { "title": "Public Perception Gap in Agriculture", "description": "Egypt's agrifood transformation is held back less by resources than by perception — agriculture is often seen by young people as a fallback, not a viable, innovative career path." },
+    "solution": { "title": "Egypt's Third Agricultural Revolution", "description": "The WFF Egypt Youth Chapter has reached over 1,000 students and trained teachers to reframe agriculture as innovation-driven, while incubating youth-led food startups toward what it calls Egypt's Third Agricultural Revolution." }
+  },
+  "AU": {
+    "ambassadorRole": "Youth Food Charter Lead",
+    "problem": { "title": "Youth Excluded from Food Policy Decisions", "description": "Climate change is reshaping Australian agriculture faster than policy can adapt, and the chapter identifies limited youth voice in food-system decision-making as a compounding risk." },
+    "solution": { "title": "Youth Food Charter & Field Notes", "description": "The chapter's Youth Food Charter captures grassroots voices nationwide, paired with the Field Notes storytelling project and on-farm learning experiences that put youth directly into policy conversations." }
+  },
+  "CN": {
+    "ambassadorRole": "Rural Revitalization Lead",
+    "problem": { "title": "Rural-Urban Migration Draining Farm Labor", "description": "Decades of rural-to-urban migration have thinned the young workforce in China's farming regions, leaving an aging population to sustain national food production." },
+    "solution": { "title": "Rural Revitalization & Agri-Tech Scaling", "description": "National rural revitalization policy is pairing with youth-led agri-tech pilots — automation, e-commerce direct-to-consumer sales — to make farming economically attractive again for young people." }
+  },
+  "MX": {
+    "ambassadorRole": "Milpa Systems Advocate",
+    "problem": { "title": "Loss of Traditional Polyculture Systems", "description": "Traditional milpa systems — maize, beans, and squash grown together — are giving way to monoculture, reducing both dietary diversity and the soil resilience these intercropping systems provided." },
+    "solution": { "title": "Milpa Revival & Smallholder Cooperatives", "description": "Youth cooperatives are reviving milpa polyculture on smallholder plots, pairing traditional knowledge with modern market access to make biodiverse farming commercially viable again." }
+  },
+  "ID": {
+    "ambassadorRole": "Indonesia Food Academy Fellow",
+    "problem": { "title": "Urbanization Outpacing Food System Capacity", "description": "Changing consumption patterns and rising food demand from Indonesia's 270+ million residents, driven by population growth and urbanization, are outpacing the current agrifood system's capacity." },
+    "solution": { "title": "Indonesia Food Academy & Youth Innovation Challenge", "description": "The WFF Indonesia Youth Chapter's six-month Food Academy and Youth Innovation Challenge work across six divisions to regenerate young farmers and align with the national Food System Transformation pathway." }
+  },
+  "CA": {
+    "ambassadorRole": "Northern Food Sovereignty Lead",
+    "problem": { "title": "Food Insecurity in Northern & Indigenous Communities", "description": "Remote northern and Indigenous communities face some of the country's highest food costs and lowest fresh-food access, a gap conventional supply chains haven't closed." },
+    "solution": { "title": "Indigenous-Led Food Sovereignty Partnerships", "description": "Chapter members are partnering directly with Indigenous-led food sovereignty programs, combining traditional harvesting knowledge with cold-chain logistics investment in the north." }
+  },
+  "AR": {
+    "ambassadorRole": "Pampas Agroecology Lead",
+    "problem": { "title": "Monoculture Pressure on the Pampas", "description": "Export-driven soy monoculture across the Pampas has squeezed out diversified smallholder farming, concentrating both land use and climate risk." },
+    "solution": { "title": "Youth Agroecology Cooperatives", "description": "Youth cooperatives are piloting diversified, agroecological rotations on smaller plots, aiming to prove that biodiversity and profitability aren't a trade-off." }
+  },
+  "IT": {
+    "ambassadorRole": "Sustainability Working Group Lead",
+    "problem": { "title": "Food Waste, Climate Change & Unequal Access", "description": "The chapter names food waste, climate change, gender gaps, and unequal access to food as Italy's core interlocking agrifood challenges." },
+    "solution": { "title": "Nine Thematic Working Groups", "description": "294 members and over 900 trained young people work across nine groups spanning sustainability, education, policy, innovation, and gender equality, engaging bodies like the UN Committee on World Food Security." }
+  },
+  "TH": {
+    "ambassadorRole": "Agri-Tech & Smallholder Digitalization Lead",
+    "problem": { "title": "Climate Extremes Threaten Rice Heritage Systems", "description": "Increasingly erratic monsoon patterns are straining Thailand's heritage rice-growing systems, with smallholders bearing the brunt of yield volatility." },
+    "solution": { "title": "Agri-Tech Climate Resilience Initiative", "description": "New agri-tech partnerships are pairing climate-finance investment with smallholder digitalization tools to help rice farmers adapt planting cycles to shifting weather." }
+  },
+  "RW": {
+    "ambassadorRole": "Climate-Smart Investment Lead",
+    "problem": { "title": "Terraced Farmland Vulnerable to Erratic Rainfall", "description": "Rwanda's steep, terraced farmland is highly exposed to erratic rainfall and erosion, putting smallholder yields at risk as climate patterns shift." },
+    "solution": { "title": "Climate-Smart Agriculture Investment Plan", "description": "Launched in June 2025 with the Rwanda Green Fund and IFC, the CSA Investment Plan targets over 83,000 hectares for climate resilience, reaching an estimated 170,000+ farmers through efficient water use and improved soil health." }
+  },
+  "KR": {
+    "ambassadorRole": "Smart Farm Innovation Lead",
+    "problem": { "title": "Shrinking Arable Land, Aging Rural Population", "description": "Rapid urbanization has shrunk South Korea's arable land while its rural farming population continues to age, squeezing traditional production capacity." },
+    "solution": { "title": "Vertical Farms & Smart Agriculture", "description": "Youth-backed vertical farming and smart-farm technology are pushing yield-per-square-meter far beyond traditional methods, making urban-adjacent food production viable again." }
+  },
+  "PH": {
+    "ambassadorRole": "Young Farmers Challenge Grantee",
+    "problem": { "title": "Typhoon Exposure Across Coastal Food Systems", "description": "Coastal fisheries and farmland face recurring typhoon damage, making climate resilience — not just productivity — the central food-security challenge." },
+    "solution": { "title": "Young Farmers Challenge Program", "description": "The Department of Agriculture's Young Farmers Challenge Program provides financial grants to young Filipinos building typhoon-resilient farming and fisheries livelihoods." }
+  },
+  "SE": {
+    "ambassadorRole": "Agroecology Living-Lab Lead",
+    "problem": { "title": "Scaling Alt-Protein Beyond Pilot Stage", "description": "Sweden's alt-protein and zero-waste food research is strong at the pilot stage but still struggles to scale into mainstream affordable supply chains." },
+    "solution": { "title": "Community-Supported Agroecology Living Lab", "description": "A CSA model at Alnarp's Agroecology Farm now supports 60+ households as a living lab, offering internships and workshops that feed alt-protein and zero-waste research into practice." }
+  },
+  "PE": {
+    "ambassadorRole": "Youth Food Lab Lead",
+    "problem": { "title": "Disconnected Coastal, Highland & Amazon Food Systems", "description": "Peru's coastal, highland, and Amazon communities face distinct climate and market pressures, and the chapter names weak regional collaboration as a barrier to shared solutions." },
+    "solution": { "title": "Youth Food Lab", "description": "The WFF Peru Youth Chapter's Youth Food Lab connects young people across all three regions, scaling youth-driven innovation and entrepreneurship through shared institutional partnerships." }
+  },
+  "SN": {
+    "ambassadorRole": "Agri-Jeunes Program Lead",
+    "problem": { "title": "Rainfall Risk for Young Sahel Farmers", "description": "Sahel rainfall volatility exposes young farmers to yield and income shocks with little financial safety net, discouraging youth from staying in agriculture." },
+    "solution": { "title": "Agri-Jeunes Youth Insurance & Training", "description": "The CNAAS Agri-Jeunes initiative trained and insured over 2,000 young farmers in 2024 against rainfall deficits and yield loss, building a financial floor under youth-led farming." }
+  },
+  "VN": {
+    "ambassadorRole": "Mekong Delta Adaptation Lead",
+    "problem": { "title": "Saltwater Intrusion in the Mekong Delta", "description": "Rising sea levels are pushing saltwater further into the Mekong Delta's rice paddies, threatening one of Southeast Asia's most productive rice-growing regions." },
+    "solution": { "title": "Climate-Resilient Rice Innovation", "description": "Youth-backed trials of salt-tolerant rice varieties and adaptive planting calendars are helping delta farmers keep pace with encroaching salinity." }
+  },
+  "NZ": {
+    "ambassadorRole": "Regenerative Pastoral Lead",
+    "problem": { "title": "Export Sustainability Under Scrutiny", "description": "As a major food exporter, New Zealand faces growing international scrutiny over the environmental footprint of pastoral farming, pressuring the sector to prove sustainability credentials." },
+    "solution": { "title": "Regenerative Pastoral & Indigenous Partnerships", "description": "Youth-led regenerative grazing pilots, developed alongside Māori food-system knowledge, aim to cut environmental impact while keeping export-grade productivity." }
+  }
+}

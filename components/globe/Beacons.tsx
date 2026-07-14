@@ -88,11 +88,11 @@ function Beacon({ chapter, globe, isSelected, onSelect }: BeaconProps) {
 interface BeaconsProps {
   chapters: Chapter[];
   globe: Globe;
-  selectedChapterId: string | null;
+  focusedChapterId: string | null;
   onSelect: (chapter: Chapter) => void;
 }
 
-export function Beacons({ chapters, globe, selectedChapterId, onSelect }: BeaconsProps) {
+export function Beacons({ chapters, globe, focusedChapterId, onSelect }: BeaconsProps) {
   return (
     <>
       {chapters.map((chapter) => (
@@ -100,7 +100,7 @@ export function Beacons({ chapters, globe, selectedChapterId, onSelect }: Beacon
           key={chapter.id}
           chapter={chapter}
           globe={globe}
-          isSelected={chapter.id === selectedChapterId}
+          isSelected={chapter.id === focusedChapterId}
           onSelect={onSelect}
         />
       ))}

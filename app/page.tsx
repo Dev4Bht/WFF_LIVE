@@ -7,6 +7,8 @@ import { Hud } from "@/components/shell/Hud";
 import { SignalFeed } from "@/components/shell/SignalFeed";
 import { Sidebar } from "@/components/shell/Sidebar";
 import { SearchBar } from "@/components/shell/SearchBar";
+import { SpotlightCard } from "@/components/shell/SpotlightCard";
+import { TourController } from "@/components/globe/TourController";
 import { useChapters } from "@/lib/hooks/useChapters";
 import { useSignalStream } from "@/lib/hooks/useSignalStream";
 
@@ -37,8 +39,10 @@ export default function Home() {
   return (
     <div className="relative h-screen w-screen overflow-hidden bg-[#05070d]">
       <GlobeCanvas />
+      <TourController />
       <Hud />
       <SignalFeed />
+      <SpotlightCard />
       <Sidebar />
       <SearchBar />
       <LoadingSequence visible={showLoading} phraseIndex={phraseIndex} />

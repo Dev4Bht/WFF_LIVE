@@ -1,20 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useSignalMapStore } from "@/lib/store/signal-map-store";
 import type { Signal } from "@/lib/types";
 
 export function useSignalStream() {
-  const addSignal = useSignalMapStore((s) => s.addSignal);
-  const [latestSignal, setLatestSignal] = useState<Signal | null>(null);
+  const recordPing = useSignalMapStore((s) => s.recordPing);
 
   useEffect(() => {
     const source = new EventSource("/api/events/stream");
 
     source.addEventListener("signal", (event) => {
       const signal = JSON.parse((event as MessageEvent).data) as Signal;
-      addSignal(signal);
-      setLatestSignal(signal);
+      recordPing(signal);
     });
 
     source.onerror = () => {
@@ -22,7 +20,5 @@ export function useSignalStream() {
     };
 
     return () => source.close();
-  }, [addSignal]);
-
-  return { latestSignal };
+  }, [recordPing]);
 }
