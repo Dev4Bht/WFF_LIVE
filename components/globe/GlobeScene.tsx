@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import { CameraControls, Stars } from "@react-three/drei";
 import { createGlobe } from "./globeInstance";
 import { Beacons } from "./Beacons";
 import { useSignalMapStore } from "@/lib/store/signal-map-store";
 import { SIGNAL_TYPE_META, type Chapter, type Signal } from "@/lib/types";
+import { hexToRgba } from "@/lib/color";
 
 const GLOBE_RADIUS = 100;
 
@@ -16,6 +17,16 @@ interface RingDatum {
   color: string;
   maxR: number;
 }
+
+interface CountryFeature {
+  type: string;
+  properties: { ISO_A2_EH?: string; NAME?: string };
+  geometry: unknown;
+}
+
+const BASE_CAP_COLOR = "rgba(255, 255, 255, 0.035)";
+const BASE_STROKE_COLOR = "rgba(255, 255, 255, 0.12)";
+const BASE_SIDE_COLOR = "rgba(255, 255, 255, 0.01)";
 
 export function GlobeScene() {
   const globe = useMemo(() => createGlobe(), []);
@@ -59,6 +70,46 @@ export function GlobeScene() {
       .arcColor("color")
       .arcStroke((d: unknown) => 0.2 + ((d as { strength: number }).strength ?? 1) * 0.15);
   }, [globe, connections, chapters]);
+
+  const [countryFeatures, setCountryFeatures] = useState<CountryFeature[]>([]);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch("/data/countries.geojson")
+      .then((res) => res.json())
+      .then((geo: { features: CountryFeature[] }) => {
+        if (!cancelled) setCountryFeatures(geo.features);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (countryFeatures.length === 0) return;
+
+    const focusedChapter = focusChapterId
+      ? chapters.find((c) => c.id === focusChapterId)
+      : null;
+    const focusedCode = focusedChapter?.countryCode ?? null;
+    const focusedColor = focusedChapter?.color ?? "#38bdf8";
+
+    const isFocused = (f: CountryFeature) => f.properties.ISO_A2_EH === focusedCode;
+
+    globe
+      .polygonsData(countryFeatures)
+      .polygonAltitude((f: unknown) => (isFocused(f as CountryFeature) ? 0.018 : 0.004))
+      .polygonCapColor((f: unknown) =>
+        isFocused(f as CountryFeature) ? hexToRgba(focusedColor, 0.35) : BASE_CAP_COLOR
+      )
+      .polygonSideColor((f: unknown) =>
+        isFocused(f as CountryFeature) ? hexToRgba(focusedColor, 0.25) : BASE_SIDE_COLOR
+      )
+      .polygonStrokeColor((f: unknown) =>
+        isFocused(f as CountryFeature) ? focusedColor : BASE_STROKE_COLOR
+      )
+      .polygonsTransitionDuration(700);
+  }, [globe, countryFeatures, focusChapterId, chapters]);
 
   const recentSignals = useMemo<Signal[]>(() => signals.slice(0, 30), [signals]);
 

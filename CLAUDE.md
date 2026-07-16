@@ -59,6 +59,7 @@ lib/simulator/       generateSignal() — writes a mock signal to Postgres and r
 mock-data/           seed chapters + signal title/description templates (used by both seed.ts and the live simulator)
 prisma/              schema.prisma, seed.ts, migrations/
 public/textures/     Earth day-map + topology (bump) textures sourced from three-globe's own CDN demo assets
+public/data/          countries.geojson — Natural Earth 1:110m admin-0 country boundaries (nvkelso/natural-earth-vector), used for the focused-country polygon highlight
 ```
 
 ## Architecture notes
@@ -74,6 +75,12 @@ public/textures/     Earth day-map + topology (bump) textures sourced from three
   globe when `selectedChapterId` is null, because the camera fly-to target
   is computed once in the globe's local space at click time and would
   drift if the globe kept spinning underneath it.
+- **Country polygon highlight**: `GlobeScene` fetches `public/data/countries.geojson`
+  once and feeds all 177 country polygons into `globe.polygonsData()` on every
+  focus change, coloring/raising only the focused chapter's country (matched
+  by `ISO_A2_EH`, not `ISO_A2` — Natural Earth's `ISO_A2` is `"-99"` for a
+  handful of countries including France, a known upstream bug). All other
+  countries stay at a faint ambient outline.
 - **Cinematic auto-spotlight tour** (`components/globe/TourController.tsx`):
   a headless component running a single imperative state machine (via
   `useSignalMapStore.subscribe`, not multiple React effects, to avoid
