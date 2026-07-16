@@ -24,6 +24,7 @@ interface SignalMapState {
   pingSeq: number;
   lastPing: Signal | null;
   activeSpotlight: ActiveSpotlight | null;
+  pingImpactPoint: { x: number; y: number } | null;
 
   setChapters: (chapters: Chapter[]) => void;
   setConnections: (connections: Connection[]) => void;
@@ -35,6 +36,7 @@ interface SignalMapState {
   setSearchOpen: (open: boolean) => void;
   enterExperience: () => void;
   setActiveSpotlight: (spotlight: ActiveSpotlight | null) => void;
+  setPingImpactPoint: (point: { x: number; y: number } | null) => void;
 }
 
 export const useSignalMapStore = create<SignalMapState>((set) => ({
@@ -50,6 +52,7 @@ export const useSignalMapStore = create<SignalMapState>((set) => ({
   pingSeq: 0,
   lastPing: null,
   activeSpotlight: null,
+  pingImpactPoint: null,
 
   setChapters: (chapters) => set({ chapters }),
   setConnections: (connections) => set({ connections }),
@@ -74,4 +77,5 @@ export const useSignalMapStore = create<SignalMapState>((set) => ({
   setSearchOpen: (open) => set({ searchOpen: open }),
   enterExperience: () => set({ hasEnteredExperience: true }),
   setActiveSpotlight: (spotlight) => set({ activeSpotlight: spotlight }),
+  setPingImpactPoint: (point) => set({ pingImpactPoint: point }),
 }));

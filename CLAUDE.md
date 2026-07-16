@@ -51,7 +51,7 @@ npm run build               # production build + typecheck
 ```
 app/api/            REST routes (chapters, signals, connections) + SSE stream + assistant
 components/globe/    three-globe + R3F scene: globeInstance (factory), GlobeScene, GlobeCanvas, Beacons
-components/shell/    HUD, LoadingSequence, Sidebar, SignalCard, SignalFeed, SearchBar, SpotlightCard (compact profile pill), SpotlightDetailPanel (full-height right panel)
+components/shell/    HUD, LoadingSequence, Sidebar, SignalCard, SignalFeed, SearchBar, AppBackdrop (page-level world-map/agri background), SpotlightCard (compact profile pill), SpotlightDetailPanel (full-height right panel), PingShockwave (background-hit animation)
 components/ui/       shadcn/ui generated primitives — don't hand-edit, regenerate via `npx shadcn add`
 lib/store/           Zustand store — single source of truth for chapters/signals/connections/selection
 lib/hooks/           useChapters (initial REST fetch), useSignalStream (EventSource subscription)
@@ -59,7 +59,7 @@ lib/simulator/       generateSignal() — writes a mock signal to Postgres and r
 mock-data/           seed chapters + signal title/description templates (used by both seed.ts and the live simulator)
 prisma/              schema.prisma, seed.ts, migrations/
 public/textures/     Earth day-map + topology (bump) textures sourced from three-globe's own CDN demo assets
-public/data/          countries.geojson (Natural Earth boundaries) + world-silhouette.svg (Wikimedia Commons blank world map, used as the SpotlightDetailPanel's agri-themed background)
+public/data/          countries.geojson (Natural Earth boundaries) + world-silhouette.svg (Wikimedia Commons blank world map, tinted green/amber as the page-level AppBackdrop)
 ```
 
 ## Architecture notes
@@ -107,6 +107,23 @@ public/data/          countries.geojson (Natural Earth boundaries) + world-silho
   small; each `Beacon` also renders a much larger fully-transparent
   (opacity 0) sphere as the actual raycast hit target so it's clickable
   without hand-tuning pointer precision.
+- **Page-level backdrop, not a card background**: `GlobeCanvas`'s WebGL
+  context is transparent (`gl={{ alpha: true }}`, no `<color attach=
+  "background">`) specifically so `AppBackdrop.tsx` — a fixed `z-0` layer
+  behind everything — shows through as the actual scene background. Glass
+  panels (Sidebar, SpotlightDetailPanel, Hud) intentionally stay plain
+  `glass-panel`; they get the map/agri texture "for free" via
+  `backdrop-blur` rather than each re-implementing it.
+- **Ping shockwave**: when a genuine live SSE signal lands, `GlobeScene`
+  projects that chapter's 3D position through the current camera
+  (`Vector3.project`, using the globe's live `matrixWorld` so it accounts
+  for idle rotation) into normalized screen space and writes it to
+  `pingImpactPoint` in the store, snapshotted at the instant the ping
+  arrives (not tracked continuously) so it reflects the current camera
+  view rather than lagging behind a fly-to. `PingShockwave.tsx` renders a
+  minimal expanding ring + soft radial flash at that exact point — a
+  screen-space HTML overlay (`z-[5]`), distinct from and complementary to
+  three-globe's own WebGL `ringsData` pulse on the globe surface.
 
 ## Deferred (not built in Phase 1)
 

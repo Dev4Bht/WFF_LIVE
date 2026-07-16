@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import { CameraControls, Stars } from "@react-three/drei";
+import * as THREE from "three";
 import { createGlobe } from "./globeInstance";
 import { Beacons } from "./Beacons";
 import { useSignalMapStore } from "@/lib/store/signal-map-store";
@@ -110,6 +111,29 @@ export function GlobeScene() {
       )
       .polygonsTransitionDuration(700);
   }, [globe, countryFeatures, focusChapterId, chapters]);
+
+  // Project the exact screen position of each fresh live ping so the HTML
+  // shockwave overlay can "hit" the background at the right spot, snapshot
+  // at the moment the ping arrives (before/regardless of any camera fly-to).
+  const pingSeq = useSignalMapStore((s) => s.pingSeq);
+  const setPingImpactPoint = useSignalMapStore((s) => s.setPingImpactPoint);
+
+  useEffect(() => {
+    if (pingSeq === 0) return;
+    const { lastPing, chapters: currentChapters } = useSignalMapStore.getState();
+    if (!lastPing) return;
+    const chapter = currentChapters.find((c) => c.id === lastPing.chapterId);
+    if (!chapter) return;
+
+    const local = globe.getCoords(chapter.lat, chapter.lng, 0.02);
+    const worldPos = new THREE.Vector3(local.x, local.y, local.z).applyMatrix4(
+      globe.matrixWorld
+    );
+    const ndc = worldPos.project(camera);
+    if (ndc.z > 1) return; // on the far side of the globe right now — skip
+
+    setPingImpactPoint({ x: (ndc.x + 1) / 2, y: (1 - ndc.y) / 2 });
+  }, [pingSeq, globe, camera, setPingImpactPoint]);
 
   const recentSignals = useMemo<Signal[]>(() => signals.slice(0, 30), [signals]);
 

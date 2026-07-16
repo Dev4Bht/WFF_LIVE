@@ -2,16 +2,16 @@
 
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { Leaf, Radio, Sparkles, Sprout, Wheat, X } from "lucide-react";
+import { Radio, Sparkles, X } from "lucide-react";
 import { useSignalMapStore } from "@/lib/store/signal-map-store";
 import { SIGNAL_TYPE_META } from "@/lib/types";
-
-const DECOR_ICONS = [Leaf, Wheat, Sprout, Leaf, Wheat];
+import { hexToRgba } from "@/lib/color";
 
 /**
  * Full-height right-side panel showing the focused chapter's real
- * problem/solution detail against a world-map-and-agriculture themed
- * background. Companion to the compact profile pill in SpotlightCard.
+ * problem/solution detail. The world-map/agriculture theme lives on
+ * AppBackdrop now — this stays a clean, classy glass panel over it.
+ * Companion to the compact profile pill in SpotlightCard.
  */
 export function SpotlightDetailPanel() {
   const activeSpotlight = useSignalMapStore((s) => s.activeSpotlight);
@@ -47,37 +47,15 @@ export function SpotlightDetailPanel() {
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: 40 }}
           transition={{ type: "spring", stiffness: 160, damping: 24 }}
-          className="pointer-events-auto fixed inset-y-0 right-0 z-10 w-[min(94vw,460px)] overflow-hidden border-l border-white/10"
+          className="pointer-events-auto glass-panel fixed inset-y-0 right-0 z-10 w-[min(94vw,460px)] overflow-hidden rounded-none border-l border-white/10"
         >
-          {/* World map + agriculture themed background */}
-          <div className="absolute inset-0">
-            <div
-              className="absolute inset-0 bg-[url(/data/world-silhouette.svg)] bg-cover bg-center opacity-[0.16] mix-blend-luminosity"
-              aria-hidden
-            />
-            <div
-              className="absolute inset-0 bg-gradient-to-b from-emerald-900/50 via-lime-900/25 to-amber-900/40 mix-blend-color"
-              aria-hidden
-            />
-            <div
-              className="absolute inset-0 bg-gradient-to-b from-[#05070d]/95 via-[#05070d]/75 to-[#05070d]/95"
-              aria-hidden
-            />
-            {DECOR_ICONS.map((Icon, i) => (
-              <Icon
-                key={i}
-                className="absolute text-emerald-200/[0.07]"
-                style={{
-                  top: `${12 + i * 18}%`,
-                  left: i % 2 === 0 ? "8%" : "auto",
-                  right: i % 2 === 1 ? "10%" : "auto",
-                  width: 64 + (i % 3) * 20,
-                  height: 64 + (i % 3) * 20,
-                }}
-                aria-hidden
-              />
-            ))}
-          </div>
+          <div
+            className="absolute inset-0"
+            style={{
+              background: `linear-gradient(180deg, ${hexToRgba(chapter.color, 0.16)} 0%, transparent 45%)`,
+            }}
+            aria-hidden
+          />
 
           <div className="relative flex h-full flex-col overflow-y-auto px-6 pt-28 pb-8">
             <button

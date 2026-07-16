@@ -2,11 +2,13 @@
 
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
+import { AppBackdrop } from "@/components/shell/AppBackdrop";
 import { LoadingSequence } from "@/components/shell/LoadingSequence";
 import { Hud } from "@/components/shell/Hud";
 import { SignalFeed } from "@/components/shell/SignalFeed";
 import { Sidebar } from "@/components/shell/Sidebar";
 import { SearchBar } from "@/components/shell/SearchBar";
+import { PingShockwave } from "@/components/shell/PingShockwave";
 import { SpotlightCard } from "@/components/shell/SpotlightCard";
 import { SpotlightDetailPanel } from "@/components/shell/SpotlightDetailPanel";
 import { TourController } from "@/components/globe/TourController";
@@ -38,8 +40,10 @@ export default function Home() {
   const showLoading = isLoading || !minTimeElapsed;
 
   return (
-    <div className="relative h-screen w-screen overflow-hidden bg-[#05070d]">
+    <div className="relative h-screen w-screen overflow-hidden">
+      <AppBackdrop />
       <GlobeCanvas />
+      <PingShockwave />
       <TourController />
       <Hud />
       <SignalFeed />

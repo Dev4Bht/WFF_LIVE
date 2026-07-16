@@ -8,10 +8,10 @@ export default function GlobeCanvas() {
   return (
     <Canvas
       camera={{ fov: 45, near: 1, far: 4000, position: [0, 0, 320] }}
-      gl={{ antialias: true }}
+      gl={{ antialias: true, alpha: true }}
       dpr={[1, 2]}
+      style={{ background: "transparent" }}
     >
-      <color attach="background" args={["#05070d"]} />
       <Suspense fallback={null}>
         <GlobeScene />
       </Suspense>
