@@ -51,7 +51,7 @@ npm run build               # production build + typecheck
 ```
 app/api/            REST routes (chapters, signals, connections) + SSE stream + assistant
 components/globe/    three-globe + R3F scene: globeInstance (factory), GlobeScene, GlobeCanvas, Beacons
-components/shell/    HUD, LoadingSequence, Sidebar, SignalCard, SignalFeed, SearchBar
+components/shell/    HUD, LoadingSequence, Sidebar, SignalCard, SignalFeed, SearchBar, SpotlightCard (compact profile pill), SpotlightDetailPanel (full-height right panel)
 components/ui/       shadcn/ui generated primitives — don't hand-edit, regenerate via `npx shadcn add`
 lib/store/           Zustand store — single source of truth for chapters/signals/connections/selection
 lib/hooks/           useChapters (initial REST fetch), useSignalStream (EventSource subscription)
@@ -59,7 +59,7 @@ lib/simulator/       generateSignal() — writes a mock signal to Postgres and r
 mock-data/           seed chapters + signal title/description templates (used by both seed.ts and the live simulator)
 prisma/              schema.prisma, seed.ts, migrations/
 public/textures/     Earth day-map + topology (bump) textures sourced from three-globe's own CDN demo assets
-public/data/          countries.geojson — Natural Earth 1:110m admin-0 country boundaries (nvkelso/natural-earth-vector), used for the focused-country polygon highlight
+public/data/          countries.geojson (Natural Earth boundaries) + world-silhouette.svg (Wikimedia Commons blank world map, used as the SpotlightDetailPanel's agri-themed background)
 ```
 
 ## Architecture notes
@@ -93,7 +93,12 @@ public/data/          countries.geojson — Natural Earth 1:110m admin-0 country
   problem/solution content (`mock-data/chapter-stories.json`, grounded in
   WFF/FAO/gov research — not the generic simulator text) is seeded as
   `Signal` rows tagged `metadata.curated: true` and served via
-  `/api/spotlights`; rendered by `components/shell/SpotlightCard.tsx`.
+  `/api/spotlights`. Rendering is split in two: `SpotlightCard.tsx` is a
+  compact bottom-center pill with just the ambassador's avatar/name/role,
+  while `SpotlightDetailPanel.tsx` is the full-height right-side panel with
+  the complete Challenge/Initiative text — both read the same
+  `activeSpotlight` store state and are mutually exclusive with the manual
+  `Sidebar` (hidden whenever `selectedChapterId` is set).
 - **Signal simulator**: `lib/simulator/generator.ts` is called both by
   `prisma/seed.ts` (initial seed) and `app/api/events/stream/route.ts` (an
   ongoing jittered ~3-8s loop) so simulated activity and REST reads never

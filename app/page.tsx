@@ -8,6 +8,7 @@ import { SignalFeed } from "@/components/shell/SignalFeed";
 import { Sidebar } from "@/components/shell/Sidebar";
 import { SearchBar } from "@/components/shell/SearchBar";
 import { SpotlightCard } from "@/components/shell/SpotlightCard";
+import { SpotlightDetailPanel } from "@/components/shell/SpotlightDetailPanel";
 import { TourController } from "@/components/globe/TourController";
 import { useChapters } from "@/lib/hooks/useChapters";
 import { useSignalStream } from "@/lib/hooks/useSignalStream";
@@ -42,6 +43,7 @@ export default function Home() {
       <TourController />
       <Hud />
       <SignalFeed />
+      <SpotlightDetailPanel />
       <SpotlightCard />
       <Sidebar />
       <SearchBar />
