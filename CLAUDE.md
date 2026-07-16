@@ -39,9 +39,14 @@ achievements, etc.) are intentionally not built yet.
 docker compose up -d       # start Postgres (mapped to localhost:5434 — 5432/5433 were taken locally)
 npx prisma migrate dev     # apply schema migrations
 npm run db:seed            # seed ~28 mock chapters + signals + connections
-npm run dev                # start Next dev server (Turbopack)
+npm run dev                # start Next dev server on the fixed port below
 npm run build               # production build + typecheck
 ```
+
+Dev/start are pinned to **port 4210** (`next dev -p 4210` / `next start -p
+4210` in package.json) so the URL is stable across sessions instead of
+Next silently falling back to 3001/3002 whenever something else on the
+machine holds 3000.
 
 `.env` holds `DATABASE_URL` and optional `ANTHROPIC_API_KEY`. Copy from
 `.env.example` if missing.
