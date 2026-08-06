@@ -11,6 +11,7 @@ import { SearchBar } from "@/components/shell/SearchBar";
 import { PingShockwave } from "@/components/shell/PingShockwave";
 import { SpotlightCard } from "@/components/shell/SpotlightCard";
 import { SpotlightDetailPanel } from "@/components/shell/SpotlightDetailPanel";
+import { NewSignalDialog } from "@/components/shell/NewSignalDialog";
 import { TourController } from "@/components/globe/TourController";
 import { useChapters } from "@/lib/hooks/useChapters";
 import { useSignalStream } from "@/lib/hooks/useSignalStream";
@@ -51,6 +52,10 @@ export default function Home() {
       <SpotlightCard />
       <Sidebar />
       <SearchBar />
+
+      <div className="pointer-events-none fixed right-6 bottom-6 z-20">
+        <NewSignalDialog />
+      </div>
       <LoadingSequence visible={showLoading} phraseIndex={phraseIndex} />
 
       <div className="glass-panel pointer-events-none fixed inset-x-4 bottom-4 z-30 rounded-xl px-4 py-2 text-center text-xs text-muted-foreground sm:hidden">

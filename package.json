@@ -5,9 +5,12 @@
   "scripts": {
     "dev": "next dev -p 4210",
     "build": "next build",
-    "start": "next start -p 4210",
+    "start": "next start -p ${PORT:-4210}",
     "lint": "eslint",
-    "db:seed": "tsx --env-file=.env prisma/seed.ts"
+    "postinstall": "prisma generate",
+    "db:seed": "tsx --env-file=.env prisma/seed.ts",
+    "db:deploy": "prisma migrate deploy",
+    "render-build": "prisma migrate deploy && tsx prisma/seed.ts --if-empty && next build"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.111.0",

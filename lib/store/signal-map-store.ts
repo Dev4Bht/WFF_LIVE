@@ -67,12 +67,18 @@ export const useSignalMapStore = create<SignalMapState>((set) => ({
       liveEventCount: state.liveEventCount + 1,
     })),
   recordPing: (signal) =>
-    set((state) => ({
-      signals: [signal, ...state.signals].slice(0, 200),
-      liveEventCount: state.liveEventCount + 1,
-      lastPing: signal,
-      pingSeq: state.pingSeq + 1,
-    })),
+    set((state) => {
+      // A user's own submission is recorded optimistically on submit, then
+      // may echo back via the SSE broadcast (or the same tab's connection);
+      // skip the duplicate rather than double-count/re-trigger the tour.
+      if (state.signals.some((s) => s.id === signal.id)) return state;
+      return {
+        signals: [signal, ...state.signals].slice(0, 200),
+        liveEventCount: state.liveEventCount + 1,
+        lastPing: signal,
+        pingSeq: state.pingSeq + 1,
+      };
+    }),
   selectChapter: (id) => set({ selectedChapterId: id }),
   setSearchOpen: (open) => set({ searchOpen: open }),
   enterExperience: () => set({ hasEnteredExperience: true }),

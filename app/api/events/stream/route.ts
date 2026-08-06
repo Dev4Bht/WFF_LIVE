@@ -1,10 +1,18 @@
 import { generateSignal } from "@/lib/simulator/generator";
+import { signalBroadcaster } from "@/lib/simulator/broadcast";
 
 export const dynamic = "force-dynamic";
+// Vercel serverless functions are killed after this many seconds regardless
+// of the open connection; the browser's EventSource reconnects automatically
+// when that happens, so the stream keeps working — just as periodic
+// reconnects instead of one persistent connection. 60s is the max duration
+// available on the Hobby plan.
+export const maxDuration = 60;
 
 export async function GET(request: Request) {
   const encoder = new TextEncoder();
   let timeoutId: ReturnType<typeof setTimeout> | undefined;
+  let onExternalSignal: ((signal: unknown) => void) | undefined;
 
   const stream = new ReadableStream({
     start(controller) {
@@ -15,6 +23,9 @@ export async function GET(request: Request) {
       };
 
       send("connected", { ok: true });
+
+      onExternalSignal = (signal: unknown) => send("signal", signal);
+      signalBroadcaster.on("signal", onExternalSignal);
 
       const tick = async () => {
         try {
@@ -31,11 +42,13 @@ export async function GET(request: Request) {
 
       request.signal.addEventListener("abort", () => {
         if (timeoutId) clearTimeout(timeoutId);
+        if (onExternalSignal) signalBroadcaster.off("signal", onExternalSignal);
         controller.close();
       });
     },
     cancel() {
       if (timeoutId) clearTimeout(timeoutId);
+      if (onExternalSignal) signalBroadcaster.off("signal", onExternalSignal);
     },
   });
 
