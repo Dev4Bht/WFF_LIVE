@@ -102,6 +102,29 @@ export function SpotlightDetailPanel() {
               </div>
             )}
 
+            {content?.metrics && content.metrics.length > 0 && (
+              <div
+                className="mb-8 grid gap-px overflow-hidden rounded-lg border border-white/10 bg-white/10"
+                style={{
+                  gridTemplateColumns: `repeat(${content.metrics.length}, minmax(0, 1fr))`,
+                }}
+              >
+                {content.metrics.map((metric) => (
+                  <div key={metric.label} className="bg-background/40 px-3 py-3 text-center">
+                    <p
+                      className="text-xl font-semibold tabular-nums"
+                      style={{ color: chapter.color }}
+                    >
+                      {metric.value}
+                    </p>
+                    <p className="mt-1 text-[10px] leading-tight tracking-wide text-muted-foreground uppercase">
+                      {metric.label}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            )}
+
             {content?.problem && (
               <div className="mb-8">
                 <p className="text-xs font-semibold tracking-wide text-rose-400 uppercase">

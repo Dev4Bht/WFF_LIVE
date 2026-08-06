@@ -33,6 +33,9 @@ type ChapterStory = {
   ambassadorRole: string;
   problem: { title: string; description: string };
   solution: { title: string; description: string };
+  // Optional headline figures. Authored through /admin/stories at runtime,
+  // so most entries have none until someone fills them in.
+  metrics?: { value: string; label: string }[];
 };
 
 const templates = signalTemplates as unknown as Record<string, SignalTemplateEntry>;
@@ -124,7 +127,7 @@ async function main() {
           severity: 3,
           lat: chapterData.lat,
           lng: chapterData.lng,
-          metadata: { curated: true },
+          metadata: { curated: true, metrics: story.metrics ?? [] },
         },
       });
 

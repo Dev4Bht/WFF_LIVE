@@ -50,8 +50,9 @@ machine holds 3000. `start` defers to `$PORT` when set — hosts like Render
 assign the port and fail the deploy's health check ("no open ports
 detected") if the app hardcodes its own.
 
-`.env` holds `DATABASE_URL` and optional `ANTHROPIC_API_KEY`. Copy from
-`.env.example` if missing.
+`.env` holds `DATABASE_URL`, optional `ANTHROPIC_API_KEY`, and optional
+`ADMIN_TOKEN` (see the story editor below). Copy from `.env.example` if
+missing.
 
 ## Deploying (Render)
 
@@ -79,11 +80,14 @@ external pub/sub.
 ## Directory structure
 
 ```
-app/api/            REST routes (chapters, signals, connections) + SSE stream + assistant
+app/api/            REST routes (chapters, signals, connections) + SSE stream + assistant + spotlights (GET all, PUT /[chapterId] to author a story)
+app/admin/stories/   Story editor UI — the only way to author spotlight content at runtime
 components/globe/    three-globe + R3F scene: globeInstance (factory), GlobeScene, GlobeCanvas, Beacons
 components/shell/    HUD, LoadingSequence, Sidebar, SignalCard, SignalFeed, SearchBar, AppBackdrop (page-level world-map/agri background), SpotlightCard (compact profile pill), SpotlightDetailPanel (full-height right panel), PingShockwave (background-hit animation)
 components/ui/       shadcn/ui generated primitives — don't hand-edit, regenerate via `npx shadcn add`
 lib/store/           Zustand store — single source of truth for chapters/signals/connections/selection
+lib/story-content.ts Shared story field limits + parseMetrics (tolerant read of Signal.metadata)
+lib/admin-auth.ts    Shared-secret guard for the story write API
 lib/hooks/           useChapters (initial REST fetch), useSignalStream (EventSource subscription)
 lib/simulator/       generateSignal() — writes a mock signal to Postgres and returns it; used by the SSE route on a jittered timer
 mock-data/           seed chapters + signal title/description templates (used by both seed.ts and the live simulator)
@@ -129,6 +133,26 @@ public/data/          countries.geojson (Natural Earth boundaries) + world-silho
   the complete Challenge/Initiative text — both read the same
   `activeSpotlight` store state and are mutually exclusive with the manual
   `Sidebar` (hidden whenever `selectedChapterId` is set).
+- **Story authoring (`/admin/stories`)**: a curated story is not a row of its
+  own — it's a chapter's `PROBLEM` + `SOLUTION` signal pair tagged
+  `metadata.curated: true`, authored by a shared `Member` acting as the
+  ambassador. `PUT /api/spotlights/[chapterId]` **updates those rows in
+  place** rather than delete-and-recreate, so a story keeps its id and
+  `createdAt` across edits, the tour doesn't read a re-save as new activity,
+  and repeated saves can't accumulate duplicate members or curated pairs.
+  Headline **metrics** live in the PROBLEM row's `metadata.metrics` — a
+  story-level field on one of the pair's two rows, since the pair is merged
+  into a single object by the GET handler anyway. Read it via
+  `parseMetrics`, never by casting: `metadata` is untyped JSON, and a
+  hand-edited row should degrade to "no metrics" rather than crash the panel.
+  Note `mock-data/chapter-stories.json` seeds a *fresh* database only —
+  because the deploy seed is `--if-empty`, editing that JSON will not update
+  an already-populated environment. The editor is the runtime path.
+- **Admin auth is a shared secret, not a user system**: `ADMIN_TOKEN` gates
+  the story write API (`lib/admin-auth.ts`). Unset, it allows edits on
+  localhost but **refuses them in production** — failing closed matters
+  because an unset variable is precisely the mistake that would otherwise
+  leave a public, world-writable endpoint on the deployed site.
 - **Signal simulator**: `lib/simulator/generator.ts` is called both by
   `prisma/seed.ts` (initial seed) and `app/api/events/stream/route.ts` (an
   ongoing jittered ~3-8s loop) so simulated activity and REST reads never

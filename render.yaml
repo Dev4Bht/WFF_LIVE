@@ -25,3 +25,7 @@ services:
       # Render prompts for it instead of baking a key into the repo.
       - key: ANTHROPIC_API_KEY
         sync: false
+      # Required to use /admin/stories on the deployed site. Without it the
+      # story write API refuses every request in production.
+      - key: ADMIN_TOKEN
+        generateValue: true

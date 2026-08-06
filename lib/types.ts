@@ -44,11 +44,25 @@ export interface Signal {
   chapter?: Chapter;
 }
 
+/**
+ * A single headline figure for a chapter's story — `value` is a preformatted
+ * display string ("33%", "1.2M", "400") rather than a number, because the
+ * unit/scale is part of how it reads and varies per metric.
+ */
+// Deliberately a type alias, not an interface: this gets written into
+// Signal.metadata, and Prisma's InputJsonObject requires an implicit index
+// signature, which interfaces don't get.
+export type StoryMetric = {
+  value: string;
+  label: string;
+};
+
 export interface Spotlight {
   chapterId: string;
   ambassador: { name: string; role: string | null } | null;
   problem: { title: string; description: string } | null;
   solution: { title: string; description: string } | null;
+  metrics: StoryMetric[];
 }
 
 export interface Connection {
