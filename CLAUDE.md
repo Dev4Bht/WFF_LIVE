@@ -44,12 +44,37 @@ npm run build               # production build + typecheck
 ```
 
 Dev/start are pinned to **port 4210** (`next dev -p 4210` / `next start -p
-4210` in package.json) so the URL is stable across sessions instead of
-Next silently falling back to 3001/3002 whenever something else on the
-machine holds 3000.
+${PORT:-4210}` in package.json) so the URL is stable across sessions instead
+of Next silently falling back to 3001/3002 whenever something else on the
+machine holds 3000. `start` defers to `$PORT` when set — hosts like Render
+assign the port and fail the deploy's health check ("no open ports
+detected") if the app hardcodes its own.
 
 `.env` holds `DATABASE_URL` and optional `ANTHROPIC_API_KEY`. Copy from
 `.env.example` if missing.
+
+## Deploying (Render)
+
+`render.yaml` is a Blueprint defining the web service + a free Postgres,
+wiring `DATABASE_URL` from the database to the service. The build runs
+`npm run render-build` = `prisma migrate deploy && tsx prisma/seed.ts
+--if-empty && next build`. Two things matter here:
+
+- **Migrations run at build**, not at boot — a fresh Render Postgres is
+  empty, so without this every API route 500s on missing tables.
+- **The seed is guarded by `--if-empty`.** Only `Chapter` is upserted;
+  members/signals/connections are plain `create`s, so an unguarded seed
+  would duplicate them on every redeploy. The flag makes it a no-op once
+  chapters exist.
+
+`prisma/seed.ts` only falls back to `process.loadEnvFile()` when
+`DATABASE_URL` is unset, so the real env var Render injects always wins and
+the seed works with no `.env` file present.
+
+Note the SSE stream and `lib/simulator/broadcast.ts` keep state **in
+process memory**, so live signal fan-out only reaches clients on the same
+instance — correct on a single instance, but scaling past one requires an
+external pub/sub.
 
 ## Directory structure
 

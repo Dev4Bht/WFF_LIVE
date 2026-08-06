@@ -4,6 +4,21 @@ import chapters from "../mock-data/chapters.json";
 import signalTemplates from "../mock-data/signal-templates.json";
 import chapterStories from "../mock-data/chapter-stories.json";
 
+// Deploy environments (Render) inject DATABASE_URL as a real env var and have
+// no .env file; local runs rely on .env. Only fall back to the file so a real
+// env var always wins.
+if (!process.env.DATABASE_URL) {
+  try {
+    process.loadEnvFile();
+  } catch {
+    // no .env file present — leave it to the connection error below
+  }
+}
+
+if (!process.env.DATABASE_URL) {
+  throw new Error("DATABASE_URL is not set — cannot seed the database.");
+}
+
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
 const prisma = new PrismaClient({ adapter });
 
@@ -37,6 +52,17 @@ const LAST_NAMES = ["Okafor", "Silva", "Nakamura", "Haddad", "Rossi", "Petrov", 
 const ROLES = ["Chapter Lead", "Field Coordinator", "Youth Ambassador", "Research Lead", "Community Liaison", "Program Manager"];
 
 async function main() {
+  // Deploys run the seed on every build, but only chapters are upserted —
+  // members/signals/connections are plain creates and would pile up on each
+  // redeploy. `--if-empty` makes the seed a no-op once the DB is populated.
+  if (process.argv.includes("--if-empty")) {
+    const existing = await prisma.chapter.count();
+    if (existing > 0) {
+      console.log(`Database already has ${existing} chapters — skipping seed.`);
+      return;
+    }
+  }
+
   console.log(`Seeding ${chapters.length} chapters...`);
 
   for (const chapterData of chapters) {
