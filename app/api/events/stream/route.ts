@@ -14,12 +14,33 @@ export async function GET(request: Request) {
   let timeoutId: ReturnType<typeof setTimeout> | undefined;
   let onExternalSignal: ((signal: unknown) => void) | undefined;
 
+  // A tick spends most of its life awaiting a database round trip, so the
+  // client can disconnect *mid-tick* — at which point clearTimeout has
+  // nothing pending to cancel. Without this flag the resolved tick enqueues
+  // onto a closed controller ("Invalid state: Controller is already closed")
+  // and, worse, reschedules itself, leaving an immortal timer writing signals
+  // for a viewer who left. One leaked timer per disconnect, forever.
+  let closed = false;
+
   const stream = new ReadableStream({
     start(controller) {
+      const cleanup = () => {
+        if (closed) return;
+        closed = true;
+        if (timeoutId) clearTimeout(timeoutId);
+        if (onExternalSignal) signalBroadcaster.off("signal", onExternalSignal);
+      };
+
       const send = (event: string, data: unknown) => {
-        controller.enqueue(
-          encoder.encode(`event: ${event}\ndata: ${JSON.stringify(data)}\n\n`)
-        );
+        if (closed) return;
+        try {
+          controller.enqueue(
+            encoder.encode(`event: ${event}\ndata: ${JSON.stringify(data)}\n\n`)
+          );
+        } catch {
+          // The connection dropped between the check above and the enqueue.
+          cleanup();
+        }
       };
 
       send("connected", { ok: true });
@@ -28,12 +49,15 @@ export async function GET(request: Request) {
       signalBroadcaster.on("signal", onExternalSignal);
 
       const tick = async () => {
+        if (closed) return;
         try {
           const signal = await generateSignal();
+          if (closed) return;
           if (signal) send("signal", signal);
         } catch (err) {
           console.error("Signal simulator tick failed:", err);
         }
+        if (closed) return;
         const jitteredDelay = 3000 + Math.random() * 5000;
         timeoutId = setTimeout(tick, jitteredDelay);
       };
@@ -41,12 +65,17 @@ export async function GET(request: Request) {
       timeoutId = setTimeout(tick, 2000);
 
       request.signal.addEventListener("abort", () => {
-        if (timeoutId) clearTimeout(timeoutId);
-        if (onExternalSignal) signalBroadcaster.off("signal", onExternalSignal);
-        controller.close();
+        cleanup();
+        try {
+          controller.close();
+        } catch {
+          // already closed by the runtime
+        }
       });
     },
     cancel() {
+      if (closed) return;
+      closed = true;
       if (timeoutId) clearTimeout(timeoutId);
       if (onExternalSignal) signalBroadcaster.off("signal", onExternalSignal);
     },
