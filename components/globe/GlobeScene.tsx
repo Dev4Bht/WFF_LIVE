@@ -32,6 +32,7 @@ const BASE_SIDE_COLOR = "rgba(255, 255, 255, 0.01)";
 export function GlobeScene() {
   const globe = useMemo(() => createGlobe(), []);
   const cameraControlsRef = useRef<CameraControls>(null);
+  const focusVectorRef = useRef(new THREE.Vector3());
   const { camera } = useThree();
 
   const chapters = useSignalMapStore((s) => s.chapters);
@@ -165,27 +166,45 @@ export function GlobeScene() {
     const chapter = chapters.find((c) => c.id === focusChapterId);
     if (!chapter) return;
 
+    globe.updateMatrixWorld();
     const { x, y, z } = globe.getCoords(chapter.lat, chapter.lng, 1.6);
+    const focus = focusVectorRef.current
+      .set(x, y, z)
+      .applyMatrix4(globe.matrixWorld);
     const dist = 1.9;
     // Manual clicks snap in quickly; the ambient tour eases in slowly for a
     // more cinematic "best animation" feel.
     controls.smoothTime = selectedChapterId ? 0.9 : 2.4;
-    controls.setLookAt(x * dist, y * dist, z * dist, x, y, z, true);
+    controls.setLookAt(
+      focus.x * dist,
+      focus.y * dist,
+      focus.z * dist,
+      focus.x,
+      focus.y,
+      focus.z,
+      true
+    );
   }, [focusChapterId, chapters, globe, selectedChapterId]);
 
   function handleSelect(chapter: Chapter) {
     selectChapter(chapter.id);
   }
 
+  // R3F animation updates Three.js objects outside React's render cycle.
+  // eslint-disable-next-line react-hooks/immutability
   useFrame(() => {
     // Pause idle rotation while a chapter is focused (manual or tour-driven)
     // so the fly-to camera target (computed once, in the globe's local
     // space) doesn't drift.
     if (!focusChapterId) {
-      // useFrame runs outside React's render/commit cycle, so mutating the
-      // Three.js object graph here is the standard R3F animation pattern.
       // eslint-disable-next-line react-hooks/immutability
       globe.rotation.y += 0.0006;
+      cameraControlsRef.current?.setTarget(0, 0, 0, false);
+      // eslint-disable-next-line react-hooks/immutability
+      camera.position.x = THREE.MathUtils.lerp(camera.position.x, 0, 0.04);
+      camera.position.y = THREE.MathUtils.lerp(camera.position.y, 0, 0.04);
+      camera.position.z = THREE.MathUtils.lerp(camera.position.z, 320, 0.025);
+      camera.lookAt(0, 0, 0);
     }
   });
 
@@ -208,6 +227,7 @@ export function GlobeScene() {
         maxDistance={500}
         dollyToCursor={false}
         smoothTime={0.6}
+        truckSpeed={0}
       />
     </>
   );

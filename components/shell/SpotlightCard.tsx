@@ -43,11 +43,11 @@ export function SpotlightCard() {
         >
           <button
             onClick={() => selectChapter(chapter.id)}
-            className="glass-panel flex items-center gap-3 rounded-full py-2 pr-5 pl-2 text-left"
+            className="glass-panel panel-highlight flex items-center gap-3 rounded-full py-2 pr-5 pl-2 text-left transition hover:-translate-y-0.5 hover:border-white/20 hover:bg-white/[0.075]"
             style={{ borderLeft: `2px solid ${chapter.color}` }}
           >
             <div
-              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-sm font-semibold text-glow"
+              className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full text-sm font-semibold text-glow shadow-[0_0_24px_currentColor]"
               style={{
                 backgroundColor: `${chapter.color}33`,
                 color: chapter.color,
@@ -58,15 +58,16 @@ export function SpotlightCard() {
             </div>
             <div>
               <div className="flex items-center gap-1.5">
-                <p className="text-sm font-medium">{content.ambassador.name}</p>
+                <p className="text-sm font-semibold">{content.ambassador.name}</p>
                 {activeSpotlight?.trigger === "ping" ? (
                   <Radio className="h-3 w-3 text-emerald-400" />
                 ) : (
                   <Sparkles className="h-3 w-3 text-primary" />
                 )}
               </div>
-              <p className="text-xs text-muted-foreground">
-                {content.ambassador.role} · {chapter.countryName}
+              <p className="mt-0.5 text-xs text-muted-foreground">
+                {content.ambassador.role} <span className="text-foreground/30">/</span>{" "}
+                {chapter.countryName}
               </p>
             </div>
           </button>

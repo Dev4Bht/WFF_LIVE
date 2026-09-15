@@ -23,7 +23,7 @@ const GlobeCanvas = dynamic(() => import("@/components/globe/GlobeCanvas"), {
 const MIN_LOADING_MS = 2800;
 
 export default function Home() {
-  const { isLoading } = useChapters();
+  const { isLoading, error } = useChapters();
   useSignalStream();
 
   const [phraseIndex, setPhraseIndex] = useState(0);
@@ -57,6 +57,16 @@ export default function Home() {
         <NewSignalDialog />
       </div>
       <LoadingSequence visible={showLoading} phraseIndex={phraseIndex} />
+
+      {error && !showLoading && (
+        <div className="glass-panel pointer-events-auto fixed top-24 left-5 z-30 max-w-sm rounded-2xl px-4 py-3 text-sm text-muted-foreground sm:left-6">
+          <p className="font-medium text-amber-300">Live data unavailable</p>
+          <p className="mt-1 text-xs leading-5">
+            The globe is visible, but chapters and stories need a working database
+            connection to appear.
+          </p>
+        </div>
+      )}
 
       <div className="glass-panel pointer-events-none fixed inset-x-4 bottom-4 z-30 rounded-xl px-4 py-2 text-center text-xs text-muted-foreground sm:hidden">
         Signal Map is built for larger screens. For the full experience, visit
